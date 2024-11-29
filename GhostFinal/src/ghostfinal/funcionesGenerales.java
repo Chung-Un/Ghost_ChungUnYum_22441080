@@ -9,7 +9,8 @@ package ghostfinal;
  * @author chung
  */
 public class funcionesGenerales {
-public static int validarUsuario(Player player,String usuarioBusqueda,String[][] usuariosInfo ){
+
+    public static int validarPosicion(Player player,String usuarioBusqueda,String[][] usuariosInfo ){
     int posicionUsuario=-1;
     
     for(int i=0;i<player.getUsuariosInfo()[0].length;i++){
@@ -18,10 +19,24 @@ public static int validarUsuario(Player player,String usuarioBusqueda,String[][]
     break;
     }
     }
-    return posicionUsuario;  
+    
+    
+    return posicionUsuario;}
+    
+    public static void validarUsuario(Player player, int posicionUsuario, String usuarioBusqueda){
+    if(posicionUsuario>=0){
+                player.setUsuario(usuarioBusqueda);
+                System.out.println("Usuario encontrado");
+                
+                }
+                else{
+                System.out.println("Usuario no encontrado.");
+                
+                }
+
+    
     }
- 
- public static void validarPassword(Player player, String passwordBusqueda){
+    public static void validarPassword(Player player, String passwordBusqueda){
     boolean passwordValida;
     passwordValida = (passwordBusqueda.length()==8);
     
@@ -33,5 +48,13 @@ public static int validarUsuario(Player player,String usuarioBusqueda,String[][]
     System.out.println("Esa password no cumple con el requisito de 8 caracteres");
     }   
     
+    if(passwordBusqueda.equals(player.getUsuariosInfo()[1][posicionUsuario])){
+                player.setPassword(passwordBusqueda);
+                System.out.println("Bienvenido " + player.usuario);
+                }
+                else{
+                System.out.println("Password incorrecta");
+    
     }
-}
+ 
+    }}

@@ -38,8 +38,7 @@ public class GhostFinal {
                 System.out.println("--->Login\nIngrese su usuario:");
                 usuarioBusqueda=entrada.next();
                 posicionUsuario = funciones.validarPosicion(player,usuarioBusqueda,player.getUsuariosInfo());
-                
-                
+                funciones.validarUsuario(player,posicionUsuario,usuarioBusqueda);
                 
                 System.out.println("Ingrese su password:");
                 passwordBusqueda = entrada.next();
@@ -105,6 +104,39 @@ public class GhostFinal {
                 
             case 4:
                 System.out.println("-->Mi Perfil\n1.Ver mis datos\n2.2.Cambiar password\n3.Eliminar cuenta\n4.Regresar al menu principal");
+                opcionUsuario = entrada.nextInt();
+                entrada.nextLine();
+                
+                switch(opcionUsuario){
+                    
+                    case 1:
+                        funciones.mostrarDatos(player);
+                        break;
+                        
+                    case 2:
+//                        System.out.println("Confirme su usuario: ");
+//                        usuarioBusqueda =entrada.nextLine();
+//                        funciones.validarPosicion(player,usuarioBusqueda, player.usuariosInfo);
+//                        funciones.validarUsuario(player,posicionUsuario,usuarioBusqueda);
+                        
+                        System.out.println("Confirme su password actual: ");
+                        passwordBusqueda = entrada.nextLine();
+                        funciones.validarPassword(player,passwordBusqueda, posicionUsuario);
+                        
+                        System.out.println("Ingrese su nueva password: ");
+                        passwordBusqueda = entrada.nextLine();
+                        funciones.validarPasswordNueva(player,passwordBusqueda);
+                        
+                        funciones.cambiarPassword(player, posicionUsuario,passwordBusqueda);
+                        break;
+                        
+                    case 3:
+                        break;
+                       
+                    case 4:
+                        break;
+                
+                }
                 
                 
                 break;

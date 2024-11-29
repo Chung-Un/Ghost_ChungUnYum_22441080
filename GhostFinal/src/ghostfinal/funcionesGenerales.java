@@ -4,12 +4,16 @@
  */
 package ghostfinal;
 
+import java.util.HashSet;
+import java.util.Set;
+
+
 /**
  *
  * @author chung
  */
 public class funcionesGenerales {
-
+    
     public static int validarPosicion(Player player,String usuarioBusqueda,String[][] usuariosInfo ){
     int posicionUsuario=-1;
     
@@ -65,7 +69,7 @@ public class funcionesGenerales {
     passwordValida = (passwordBusqueda.length()==8);
     
     if(passwordValida){
-    System.out.println("Password valida\nCreacion de perfil exitosa.");
+    System.out.println("Password valida.");
     player.setPassword(passwordBusqueda);
     }
     else{
@@ -90,10 +94,22 @@ public class funcionesGenerales {
 
     player.setUsuariosInfo(usuariosconCreados);
     System.out.println("Usuario creado exitosamente!");
-    
-    
+    }
+
+    public static void mostrarDatos(Player player){
+    System.out.println("Usuario: " + player.usuario);
+    System.out.println("Partidas ganadas: " + player.partidasGanadas);
+    System.out.println("Partidas perdidas: " + player.partidasPerdidas);
+    System.out.println("Partidas empatadas: " + player.partidasEmpatadas);
     
     }
 
-
+    public static void cambiarPassword(Player player, int posicionUsuario, String passwordBusqueda){
+    player.setPassword(passwordBusqueda);
+    player.getUsuariosInfo()[1][posicionUsuario] = passwordBusqueda;
+        
+    System.out.println("Password cambiada con exito!");
+    
+    }
+    
 }

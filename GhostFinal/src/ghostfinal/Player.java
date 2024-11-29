@@ -15,7 +15,7 @@ public class Player {
                             {"mcr4ever","pollochu","gatos001"},
                             {"10","13","16"}};
 
-
+ int partidasPerdidas, partidasGanadas, partidasEmpatadas; 
     
 
     public String[][] getUsuariosInfo() {

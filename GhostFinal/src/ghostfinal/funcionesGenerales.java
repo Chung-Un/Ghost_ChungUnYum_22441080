@@ -112,4 +112,23 @@ public class funcionesGenerales {
     
     }
     
+    public static void eliminarCuenta(Player player){
+    String[][] arregloNuevo =new String [player.usuariosInfo.length][player.usuariosInfo[0].length-1];
+    String usuarioPrueba;
+    for(int i=0; i<player.usuariosInfo[0].length;i++){
+        usuarioPrueba =  player.getUsuariosInfo()[1][i];
+        
+        if(!usuarioPrueba.equals(player.usuario)){
+        for(int x=0; i< arregloNuevo.length;x++){
+        for(int y=0; y<player.getUsuariosInfo()[i].length;x++){
+            arregloNuevo[x][y] = player.getUsuariosInfo()[x][y];
+        }
+        }
+        System.out.println("Cuenta eliminada con exito");
+        }
+        
+         player.setUsuariosInfo(arregloNuevo);
+    }
+        
+    }
 }

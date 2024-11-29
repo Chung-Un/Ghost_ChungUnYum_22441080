@@ -103,7 +103,7 @@ public class GhostFinal {
                 break;
                 
             case 4:
-                System.out.println("-->Mi Perfil\n1.Ver mis datos\n2.2.Cambiar password\n3.Eliminar cuenta\n4.Regresar al menu principal");
+                System.out.println("-->Mi Perfil\n1.Ver mis datos\n2.Cambiar password\n3.Eliminar cuenta\n4.Regresar al menu principal\n5.Cerrar Sesion");
                 opcionUsuario = entrada.nextInt();
                 entrada.nextLine();
                 
@@ -114,10 +114,6 @@ public class GhostFinal {
                         break;
                         
                     case 2:
-//                        System.out.println("Confirme su usuario: ");
-//                        usuarioBusqueda =entrada.nextLine();
-//                        funciones.validarPosicion(player,usuarioBusqueda, player.usuariosInfo);
-//                        funciones.validarUsuario(player,posicionUsuario,usuarioBusqueda);
                         
                         System.out.println("Confirme su password actual: ");
                         passwordBusqueda = entrada.nextLine();
@@ -131,9 +127,21 @@ public class GhostFinal {
                         break;
                         
                     case 3:
+                        System.out.println("Esta seguro que quiere eliminar su cuenta?(s/n)");
+                        String decision;
+                        decision = entrada.next().toLowerCase();
+                        
+                        if(decision.equals("s")){
+                        funciones.eliminarCuenta(player);
+                        }
                         break;
                        
                     case 4:
+                        break;
+                        
+                    case 5:
+                        player.setUsuario(null);
+                        player.setPassword(null);
                         break;
                 
                 }

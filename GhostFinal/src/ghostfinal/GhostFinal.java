@@ -59,6 +59,7 @@ public class GhostFinal {
                 passwordBusqueda = entrada.next(); 
                 funciones.validarPasswordNueva(player,passwordBusqueda);
                 
+                funciones.crearPlayer(player);
                 break;
                 
             case 3:

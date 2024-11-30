@@ -10,14 +10,42 @@ package ghostfinal;
  */
 public class Player {
  String usuario,password;
- String[] resumenPartidas= new String[9];
  String[][] usuariosInfo = {{"chungun23","pollochuco24","mellzx"},
                             {"mcr4ever","pollochu","gatos001"},
-                            {"10","13","16"}};
+                            };
 
- int partidasPerdidas, partidasGanadas, partidasEmpatadas; 
+ 
     
-
+    String partidas[];
+    int puntos= 0;
+    int partidasJugadas, partidasGanadas, partidasEmpatadas, partidasPerdidas;
+ 
+    public Player (String usuario, String password){
+    this.usuario = usuario;
+    this.password = password;
+    partidasJugadas = 0;
+    partidasGanadas=0;
+    partidasEmpatadas=0;
+    partidasPerdidas=0;
+    
+    partidas = new String[100];
+    }
+    
+    void registrarPartida (String partidaActual){
+    partidas[partidasJugadas] = partidaActual;
+    partidasJugadas++;
+    }
+    
+    String mostrarPartidas(){
+    String todasPartidas="";
+     
+    for(int i=0;i<partidasJugadas;i++){
+     todasPartidas+= partidas[i] + "\n";
+    }
+    
+    return todasPartidas;
+    }
+ 
     public String[][] getUsuariosInfo() {
         return usuariosInfo;
     }
@@ -42,12 +70,7 @@ public class Player {
         this.password = password;
     }
 
-    public String[] getResumenPartidas() {
-        return resumenPartidas;
-    }
-
-    public void setResumenPartidas(String[] resumenPartidas) {
-        this.resumenPartidas = resumenPartidas;
-    }
+    
+    
       
 }

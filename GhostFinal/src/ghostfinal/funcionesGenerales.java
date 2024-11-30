@@ -4,7 +4,7 @@
  */
 package ghostfinal;
 
-import java.util.HashSet;
+
 import java.util.Set;
 
 
@@ -14,11 +14,11 @@ import java.util.Set;
  */
 public class funcionesGenerales {
     
-    public static int validarPosicion(Player player,String usuarioBusqueda,String[][] usuariosInfo ){
+    public static int validarPosicion(String usuarioBusqueda,String[][] usuariosInfo ){
     int posicionUsuario=-1;
     
-    for(int i=0;i<player.getUsuariosInfo()[0].length;i++){
-    if(usuarioBusqueda.equals(player.getUsuariosInfo()[0][i])){
+    for(int i=0;i<usuariosInfo[0].length;i++){
+    if(usuarioBusqueda.equals(usuariosInfo[0][i])){
     posicionUsuario = i;
     break;
     }
@@ -28,9 +28,8 @@ public class funcionesGenerales {
     return posicionUsuario;
     }
     
-    public static void validarUsuario(Player player, int posicionUsuario, String usuarioBusqueda){
+    public static void validarUsuario( int posicionUsuario){
     if(posicionUsuario>=0){
-                player.setUsuario(usuarioBusqueda);
                 System.out.println("Usuario encontrado");
                 
                 }
@@ -42,9 +41,9 @@ public class funcionesGenerales {
     
     }
     
-    public static void validarUsuarioNuevo(Player player,int posicionUsuario, String usuarioBusqueda){
+    public static void validarUsuarioNuevo(int posicionUsuario){
     if(posicionUsuario==-1){
-                player.setUsuario(usuarioBusqueda);
+    System.out.println("Usuario valido.");
     }
     else{
     System.out.println("Ese usuario ya se encuentra en uso");
@@ -52,48 +51,51 @@ public class funcionesGenerales {
     
     }
     
-    public static void validarPassword(Player player, String passwordBusqueda, int posicionUsuario){
-   
+    public static boolean validarPassword(String passwordBusqueda, int posicionUsuario, String[][] usuariosInfo){
+    boolean passwordValida=false;
     
-    if(passwordBusqueda.equals(player.getUsuariosInfo()[1][posicionUsuario])){
-                player.setPassword(passwordBusqueda);
-                System.out.println("Bienvenido " + player.usuario);
+    if(passwordBusqueda.equals(usuariosInfo[1][posicionUsuario])){
+                passwordValida=true;
+                return passwordValida;
                 }
                 else{
                 System.out.println("Password incorrecta");
+                passwordValida= false;
+                return passwordValida;
     
     }}
  
-    public static void validarPasswordNueva (Player player, String passwordBusqueda){
-    boolean passwordValida;
-    passwordValida = (passwordBusqueda.length()==8);
+    public static boolean validarPasswordNueva (String passwordBusqueda){
+    boolean passwordValida = (passwordBusqueda.length()==8);
     
     if(passwordValida){
     System.out.println("Password valida.");
-    player.setPassword(passwordBusqueda);
+    return true;
     }
     else{
     System.out.println("Esa password no cumple con el requisito de 8 caracteres");
+    return false;
     }   
     
     }
     
-    public static void crearPlayer(Player player){
+    public static String[][] crearPlayer(String[][] usuariosInfo,String usuarioBusqueda,String passwordBusqueda){
    
-    String[][] usuariosconCreados = new String[player.getUsuariosInfo().length][player.getUsuariosInfo()[0].length+1];
+    String[][] usuariosconCreados = new String[usuariosInfo.length][usuariosInfo[0].length+1]; //se crea un nuevo arreglo con una posicion mas que el original
     
-    for(int i=0; i< player.getUsuariosInfo().length;i++){
-      for(int x=0; x<player.getUsuariosInfo()[i].length;x++){
-        usuariosconCreados[i][x] = player.getUsuariosInfo()[i][x];
+    for(int i=0; i< usuariosInfo.length;i++){ //se recorre el arreglo original para reemplazar esos valores en el nuevo
+      for(int x=0; x<usuariosInfo[i].length;x++){
+        usuariosconCreados[i][x] = usuariosInfo[i][x];
+        
         }
     }
     
-    usuariosconCreados[0][usuariosconCreados[0].length-1] = player.usuario;
-    usuariosconCreados[1][usuariosconCreados[1].length-1] = player.password;
-    usuariosconCreados[2][usuariosconCreados[2].length-1] = "";
-
-    player.setUsuariosInfo(usuariosconCreados);
+    usuariosconCreados[0][usuariosconCreados[0].length-1] = usuarioBusqueda;//se establece el usuario como el ultimo agregado
+    usuariosconCreados[1][usuariosconCreados[1].length-1]=passwordBusqueda ;//se hace lo mismo con la password
+    
+    
     System.out.println("Usuario creado exitosamente!");
+    return usuariosconCreados;
     }
 
     public static void mostrarDatos(Player player){
@@ -131,4 +133,6 @@ public class funcionesGenerales {
     }
         
     }
+    
+    
 }

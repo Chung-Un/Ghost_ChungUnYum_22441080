@@ -16,8 +16,13 @@ public class GhostFinal {
      * @param args the command line arguments
      */
     
-    static Player player = new Player();
     static funcionesGenerales funciones= new funcionesGenerales(); 
+    static ghostGame game = new ghostGame();
+    static boolean passwordValida = false;
+    static String[][] usuariosInfo = {{"chungun23","pollochuco24","mellzx"},
+                            {"mcr4ever","pollochu","gatos001"},
+                            };
+    static Player player1 =null;
     
     public static void main(String[] args) {
     
@@ -37,13 +42,19 @@ public class GhostFinal {
                 
                 System.out.println("--->Login\nIngrese su usuario:");
                 usuarioBusqueda=entrada.next();
-                posicionUsuario = funciones.validarPosicion(player,usuarioBusqueda,player.getUsuariosInfo());
-                funciones.validarUsuario(player,posicionUsuario,usuarioBusqueda);
+                posicionUsuario = funciones.validarPosicion(usuarioBusqueda,usuariosInfo);
+                funciones.validarUsuario(posicionUsuario);
                 
+                if (posicionUsuario>-1){
                 System.out.println("Ingrese su password:");
                 passwordBusqueda = entrada.next();
-                funciones.validarPassword(player,passwordBusqueda,posicionUsuario);
+                passwordValida = funciones.validarPassword(passwordBusqueda,posicionUsuario,usuariosInfo);
                 
+                }
+                if (passwordValida){
+                player1 = new Player(usuarioBusqueda, passwordBusqueda);
+                System.out.println("Bienvenido " + player1.usuario);
+                }
                 break;
                 
                 
@@ -51,14 +62,21 @@ public class GhostFinal {
                 
                 System.out.println("-->Crear Player\nIngrese un nombre de usuario sin espacios:");
                 usuarioBusqueda = entrada.next();
-                posicionUsuario = funciones.validarPosicion(player,usuarioBusqueda,player.getUsuariosInfo());
-                funciones.validarUsuarioNuevo(player,posicionUsuario,usuarioBusqueda); //nuevo debe ser 
-                    
+                posicionUsuario = funciones.validarPosicion(usuarioBusqueda,usuariosInfo);
+               
+                if(posicionUsuario==-1){
+                funciones.validarUsuarioNuevo(posicionUsuario); 
+                  
                 System.out.println("Ingrese una password de 8 caracteres:");
                 passwordBusqueda = entrada.next(); 
-                funciones.validarPasswordNueva(player,passwordBusqueda);
+                passwordValida = funciones.validarPasswordNueva(passwordBusqueda);
                 
-                funciones.crearPlayer(player);
+                }
+                if(passwordValida){
+                usuariosInfo = funciones.crearPlayer(usuariosInfo,usuarioBusqueda,passwordBusqueda);
+                player1 = new Player(usuarioBusqueda, passwordBusqueda);
+                
+                }
                 break;
                 
             case 3:
@@ -74,6 +92,7 @@ public class GhostFinal {
         switch(opcionUsuario){
         
             case 1:
+                game.imprimirTablero();
                 break;
                 
             case 2:
@@ -87,11 +106,10 @@ public class GhostFinal {
                 switch(opcionUsuario){
                 
                     case 1:
-                       System.out.println("El resumen de las ultimas 10 partidas de: " + player.getUsuario());
-                     
-                       for (String i : player.getResumenPartidas()){
-                           System.out.println(i);
-                       }
+                       System.out.println("El resumen de las ultimas 10 partidas de: " + player1.getUsuario());
+                       player1.mostrarPartidas();
+                       
+                       
                        break;
                        
                     case 2:
@@ -110,20 +128,22 @@ public class GhostFinal {
                 switch(opcionUsuario){
                     
                     case 1:
-                        funciones.mostrarDatos(player);
+                        funciones.mostrarDatos(player1);
                         break;
                         
                     case 2:
                         
                         System.out.println("Confirme su password actual: ");
                         passwordBusqueda = entrada.nextLine();
-                        funciones.validarPassword(player,passwordBusqueda, posicionUsuario);
+                        funciones.validarPassword(passwordBusqueda,posicionUsuario,usuariosInfo);
                         
+                        if(passwordValida){
                         System.out.println("Ingrese su nueva password: ");
                         passwordBusqueda = entrada.nextLine();
-                        funciones.validarPasswordNueva(player,passwordBusqueda);
+                        funciones.validarPasswordNueva(passwordBusqueda);
                         
-                        funciones.cambiarPassword(player, posicionUsuario,passwordBusqueda);
+                        funciones.cambiarPassword(player1, posicionUsuario, passwordBusqueda);
+                        }
                         break;
                         
                     case 3:
@@ -132,7 +152,7 @@ public class GhostFinal {
                         decision = entrada.next().toLowerCase();
                         
                         if(decision.equals("s")){
-                        funciones.eliminarCuenta(player);
+                        funciones.eliminarCuenta(player1);
                         }
                         break;
                        
@@ -140,8 +160,8 @@ public class GhostFinal {
                         break;
                         
                     case 5:
-                        player.setUsuario(null);
-                        player.setPassword(null);
+                        player1.setUsuario(null);
+                        player1.setPassword(null);
                         break;
                 
                 }

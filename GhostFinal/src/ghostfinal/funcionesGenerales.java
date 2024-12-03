@@ -28,18 +28,19 @@ public class funcionesGenerales {
     return posicionUsuario;
     }
     
-    public static void validarUsuario( int posicionUsuario){
+    public static boolean validarUsuario( int posicionUsuario){
     if(posicionUsuario>=0){
                 System.out.println("Usuario encontrado");
-                
+                return true;
                 }
                 else{
                 System.out.println("Usuario no encontrado.");
-                
+                return false;
                 }
 
-    
     }
+    
+        
     
     public static void validarUsuarioNuevo(int posicionUsuario){
     if(posicionUsuario==-1){
@@ -117,22 +118,25 @@ public class funcionesGenerales {
     public static void eliminarCuenta(Player player){
     String[][] arregloNuevo =new String [player.usuariosInfo.length][player.usuariosInfo[0].length-1];
     String usuarioPrueba;
+    
+    int indice=0;
+            
     for(int i=0; i<player.usuariosInfo[0].length;i++){
-        usuarioPrueba =  player.getUsuariosInfo()[1][i];
+        usuarioPrueba =  player.getUsuariosInfo()[0][i];
         
         if(!usuarioPrueba.equals(player.usuario)){
-        for(int x=0; i< arregloNuevo.length;x++){
-        for(int y=0; y<player.getUsuariosInfo()[i].length;x++){
-            arregloNuevo[x][y] = player.getUsuariosInfo()[x][y];
-        }
-        }
-        System.out.println("Cuenta eliminada con exito");
+        for(int x=0; x< arregloNuevo.length;x++){
+        arregloNuevo[x][indice] = player.getUsuariosInfo()[x][i];
         }
         
-         player.setUsuariosInfo(arregloNuevo);
+        }
+          
     }
-        
+    player.setUsuariosInfo(arregloNuevo);  
+    System.out.println("Perfil eliminado exitosamente");
     }
     
+   
+   
     
 }

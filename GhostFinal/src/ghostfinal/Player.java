@@ -19,6 +19,7 @@ public class Player {
     String partidas[];
     int puntos= 0;
     int partidasJugadas, partidasGanadas, partidasEmpatadas, partidasPerdidas;
+    int cantFantasmas;
  
     public Player (String usuario, String password){
     this.usuario = usuario;
@@ -27,9 +28,13 @@ public class Player {
     partidasGanadas=0;
     partidasEmpatadas=0;
     partidasPerdidas=0;
+    cantFantasmas=0;
     
     partidas = new String[100];
     }
+    
+    
+   
     
     void registrarPartida (String partidaActual){
     partidas[partidasJugadas] = partidaActual;

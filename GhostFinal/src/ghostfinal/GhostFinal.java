@@ -23,12 +23,15 @@ public class GhostFinal {
                             {"mcr4ever","pollochu","gatos001"},
                             };
     static Player player1 =null;
+    static Player player2 = null;
+    static int maxFantasmas=8;
     
     public static void main(String[] args) {
     
         Scanner entrada = new Scanner(System.in);
         int opcionUsuario=0, posicionUsuario=0;
         String usuarioBusqueda="", passwordBusqueda="";
+        String jugador2;
         
         
         
@@ -92,10 +95,30 @@ public class GhostFinal {
         switch(opcionUsuario){
         
             case 1:
-                game.imprimirTablero();
+                jugador2 = game.player2();
+                posicionUsuario = funciones.validarPosicion(jugador2 , usuariosInfo);
+                
+                
+                if (funciones.validarUsuario(posicionUsuario)== true){
+                player2 = new Player (jugador2, null);
+                game.tablero = game.hacerTablero(1);
+                game.iniciarJuego(player1,player2,maxFantasmas);
+                
+                } 
+                else{
+                System.out.println("Jugador no existente.");
+                
+                }
+                
                 break;
                 
             case 2:
+                System.out.println("Elija la dificultad deseada: \n1.Normal \n2.Expert\n3.Genius ");
+                opcionUsuario = entrada.nextInt();
+                entrada.nextLine();
+                game.tablero= game.hacerTablero(opcionUsuario);
+                maxFantasmas = game.configuracion(opcionUsuario);
+                
                 break;
                 
             case 3:

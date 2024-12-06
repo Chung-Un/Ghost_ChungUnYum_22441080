@@ -41,7 +41,7 @@ public class funcionesGenerales {
 
     }
     
-        
+    
     
     public static void validarUsuarioNuevo(int posicionUsuario){
     if(posicionUsuario==-1){

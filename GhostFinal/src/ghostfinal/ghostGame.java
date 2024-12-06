@@ -61,6 +61,7 @@ return modo;
 }
 
 
+        
 public void separador(){
 System.out.println();
   }
@@ -342,6 +343,8 @@ public void iniciarJuegoManual(Player player1, Player player2){
     player2.partidasPerdidas++;//se actualizan los contadores respectviso
     resultado = player1.usuario + " triunfo sobre " + player2.usuario + "porque capturo todos sus fantasmas buenos!";//el resultado 
     System.out.println(resultado);
+    player1.registrarPartida(resultado);
+    player2.registrarPartida(resultado);
     resultadoRegistro(resultado,player1,player2);//mandamos el resultado a la lista de partidas
     return true;
     }
@@ -352,6 +355,8 @@ public void iniciarJuegoManual(Player player1, Player player2){
     player2.partidasPerdidas++;
     resultado = player1.usuario + " triunfo sobre " + player2.usuario + " porque este comio todos sus fantasmas malos!";
     System.out.println(resultado);
+    player1.registrarPartida(resultado);
+    player2.registrarPartida(resultado);
     resultadoRegistro(resultado,player1,player2);
     
     }
@@ -360,6 +365,8 @@ public void iniciarJuegoManual(Player player1, Player player2){
     player1.partidasPerdidas++;
     resultado = player2.usuario + " triunfo sobre " + player1.usuario + " porque este comio todos sus fantasmas malos!";
     System.out.println(resultado);
+    player1.registrarPartida(resultado);
+    player2.registrarPartida(resultado);
     resultadoRegistro(resultado,player1,player2);
     
     }
@@ -371,6 +378,8 @@ public void iniciarJuegoManual(Player player1, Player player2){
     player1.partidasGanadas++;
     player2.partidasPerdidas++;
     resultado = player1.usuario + " triunfo sobre " + player2.usuario + " porque logro salir del castillo con un fantasma bueno! ";
+    player1.registrarPartida(resultado);
+    player2.registrarPartida(resultado);
     System.out.println(resultado);
     resultadoRegistro(resultado,player1,player2);
     
@@ -379,6 +388,8 @@ public void iniciarJuegoManual(Player player1, Player player2){
     player2.partidasGanadas++;
     player2.partidasPerdidas++;
     resultado=player1.usuario + " triunfo sobre " + player2.usuario + " porque logro salir del castillo con un fantasma bueno! " ;
+    player1.registrarPartida(resultado);
+    player2.registrarPartida(resultado);
     System.out.println(resultado);
     player1.registrarPartida(resultado);
     resultadoRegistro(resultado,player1,player2);
@@ -389,6 +400,8 @@ public void iniciarJuegoManual(Player player1, Player player2){
     player2.partidasGanadas++;
     player1.partidasPerdidas++;
     resultado = player2.usuario + " triunfo sobre " + player1.usuario + "porque capturo todos sus fantasmas buenos!";
+    player1.registrarPartida(resultado);
+    player2.registrarPartida(resultado);
     System.out.println(resultado);
     player1.registrarPartida(resultado);
     resultadoRegistro(resultado,player1,player2);

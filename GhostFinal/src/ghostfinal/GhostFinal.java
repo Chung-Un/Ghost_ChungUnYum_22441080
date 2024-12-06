@@ -231,7 +231,7 @@ public class GhostFinal {
                     case 5:
                         player1.setUsuario(null);
                         player1.setPassword(null);
-                        break;
+                        return;
                 
                 }
                 
@@ -239,10 +239,11 @@ public class GhostFinal {
                 break;
                 
             case 5:
+                player1.setUsuario(null); 
+                player1.setPassword(null);
+                return;
                 
                 
-                
-                break;
         
          }
         

@@ -19,7 +19,8 @@ public class Player {
     String partidas[];
     int puntos= 0;
     int partidasJugadas, partidasGanadas, partidasEmpatadas, partidasPerdidas;
-    int cantFantasmas;
+    int cantFantasmas, cantFantasmasBuenos,cantFantasmasMalos,maxFantasmas, fantasmasBuenosCapturados, fantasmasMalosCapturados;
+    boolean fantasmaSale;
  
     public Player (String usuario, String password){
     this.usuario = usuario;
@@ -29,8 +30,47 @@ public class Player {
     partidasEmpatadas=0;
     partidasPerdidas=0;
     cantFantasmas=0;
+    cantFantasmasBuenos=4;
+    cantFantasmasMalos=4;
+    maxFantasmas=8;
+    fantasmasBuenosCapturados=0;
+    fantasmasMalosCapturados=0;
+    fantasmaSale=false;
+    puntos=0;
     
     partidas = new String[100];
+    }
+
+    public int getMaxFantasmas() {
+        return maxFantasmas;
+    }
+
+    public void setMaxFantasmas(int maxFantasmas) {
+        this.maxFantasmas = maxFantasmas;
+    }
+
+    public int getCantFantasmas() {
+        return cantFantasmas;
+    }
+
+    public void setCantFantasmas(int cantFantasmas) {
+        this.cantFantasmas = cantFantasmas;
+    }
+
+    public int getCantFantasmasBuenos() {
+        return cantFantasmasBuenos;
+    }
+
+    public void setCantFantasmasBuenos(int cantFantasmasBuenos) {
+        this.cantFantasmasBuenos = cantFantasmasBuenos;
+    }
+
+    public int getCantFantasmasMalos() {
+        return cantFantasmasMalos;
+    }
+
+    public void setCantFantasmasMalos(int cantFantasmasMalos) {
+        this.cantFantasmasMalos = cantFantasmasMalos;
     }
     
     

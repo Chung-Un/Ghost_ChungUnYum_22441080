@@ -19,6 +19,7 @@ public class GhostFinal {
     static funcionesGenerales funciones= new funcionesGenerales(); 
     static ghostGame game = new ghostGame();
     static boolean passwordValida = false;
+    static boolean usuarioValido =false;
     static String[][] usuariosInfo = {{"chungun23","pollochuco24","mellzx"},
                             {"mcr4ever","pollochu","gatos001"},
                             };
@@ -26,15 +27,17 @@ public class GhostFinal {
     static Player player2 = null;
     static int maxFantasmas=8;
     
+    static Scanner entrada = new Scanner(System.in);
+    static int opcionUsuario=0, posicionUsuario=0;
+    static String usuarioBusqueda="", passwordBusqueda="";
+    static String jugador2;
+        
     public static void main(String[] args) {
     
-        Scanner entrada = new Scanner(System.in);
-        int opcionUsuario=0, posicionUsuario=0;
-        String usuarioBusqueda="", passwordBusqueda="";
-        String jugador2;
         
         
         
+        while(true){
         System.out.println("**Bienvenido a Ghost**\n===========Menu de Inicio===========\nDigite el numero de la opcion que desea acceder\n1.Login\n2.Crear player\n3.Salir");
         opcionUsuario = entrada.nextInt();
        
@@ -57,6 +60,11 @@ public class GhostFinal {
                 if (passwordValida){
                 player1 = new Player(usuarioBusqueda, passwordBusqueda);
                 System.out.println("Bienvenido " + player1.usuario);
+                menuPrincipal();
+                }
+                else{
+                System.out.println("Login fallido");
+                continue;
                 }
                 break;
                 
@@ -78,7 +86,12 @@ public class GhostFinal {
                 if(passwordValida){
                 usuariosInfo = funciones.crearPlayer(usuariosInfo,usuarioBusqueda,passwordBusqueda);
                 player1 = new Player(usuarioBusqueda, passwordBusqueda);
+                menuPrincipal();
                 
+                }
+                else{
+                System.out.println("Creacion de perfil fallida");
+                continue;
                 }
                 break;
                 
@@ -86,8 +99,11 @@ public class GhostFinal {
                 System.out.println("Hasta luego...");
                 System.exit(0);
             }
-                
               
+    }
+    }   
+        static void menuPrincipal(){
+        while(true){
         System.out.println("===========Menu principal===========\n1.Jugar\n2.Configuracion\n3.Reportes\n4.Mi perfil\n5.Cerrar sesion");
         opcionUsuario = entrada.nextInt();
         entrada.nextLine();
@@ -97,16 +113,20 @@ public class GhostFinal {
             case 1:
                 jugador2 = game.player2();
                 posicionUsuario = funciones.validarPosicion(jugador2 , usuariosInfo);
+                usuarioValido = funciones.validarUsuario(posicionUsuario);
                 
                 
-                if (funciones.validarUsuario(posicionUsuario)== true){
+                if (usuarioValido){
+             
                 player2 = new Player (jugador2, null);
                 game.tablero = game.hacerTablero(1);
-                game.iniciarJuego(player1,player2,maxFantasmas);
+                game.iniciarJuego(player1,player2);
+                game.juego(player1, player2);
                 
                 } 
                 else{
                 System.out.println("Jugador no existente.");
+                continue;
                 
                 }
                 
@@ -117,7 +137,7 @@ public class GhostFinal {
                 opcionUsuario = entrada.nextInt();
                 entrada.nextLine();
                 game.tablero= game.hacerTablero(opcionUsuario);
-                maxFantasmas = game.configuracion(opcionUsuario);
+                game.configuracion(opcionUsuario, player1);
                 
                 break;
                 
@@ -167,6 +187,11 @@ public class GhostFinal {
                         
                         funciones.cambiarPassword(player1, posicionUsuario, passwordBusqueda);
                         }
+                        else{
+                        System.out.println("Datos no validos");
+                        continue;
+                        }
+                       
                         break;
                         
                     case 3:
@@ -176,6 +201,7 @@ public class GhostFinal {
                         
                         if(decision.equals("s")){
                         funciones.eliminarCuenta(player1);
+                        continue;
                         }
                         break;
                        
@@ -200,7 +226,7 @@ public class GhostFinal {
         
          }
         
-                
+        }     
                 
         
         
@@ -209,5 +235,5 @@ public class GhostFinal {
         }
         
     }
-    
+
 

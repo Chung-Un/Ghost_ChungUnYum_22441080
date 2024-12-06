@@ -210,6 +210,10 @@ public void iniciarJuegoManual(Player player1, Player player2){
             nuevaColumna = moverFantasmasColumna();
             continue;
             
+        default:
+            System.out.println("Opcion no valida");
+            continue;
+            
                     
     
     }

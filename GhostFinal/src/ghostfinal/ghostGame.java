@@ -18,20 +18,18 @@ String[][] fantasmas;
 String player2Nombre;
 int fantasmasplayer1=0;
 int fantasmasplayer2=0;
-Random randomfilaPlayer1 = new Random((1-0)+0);
-Random randomfilaPlayer2 = new Random((5-4) + 4);
-Random randomcolumna = new Random((4-1) + 1);
+Random random = new Random();
 int turnos=1;
 Scanner entrada = new Scanner(System.in);
 
 
 String[][] tablero = new String[][]{
+                {"X","-","-","-","-","X"},
                 {"-","-","-","-","-","-"},
                 {"-","-","-","-","-","-"},
                 {"-","-","-","-","-","-"},
                 {"-","-","-","-","-","-"},
-                {"-","-","-","-","-","-"},
-                {"-","-","-","-","-","-"}
+                {"X","-","-","-","-","X"}
 };
     
    
@@ -65,7 +63,6 @@ return modo;
 
 public void separador(){
 System.out.println();
-System.out.println();
   }
 
 public void configuracion(int opcionUsuario, Player player1) {
@@ -88,13 +85,12 @@ public void configuracion(int opcionUsuario, Player player1) {
 }
 
 
-public void cantFantasmasTipo(int maxFantasmas, Player player1, Player player2) {
-    int cantFantasmasTipo = maxFantasmas / 2;
-
-    player1.setCantFantasmasBuenos(cantFantasmasTipo);
-    player1.setCantFantasmasMalos(cantFantasmasTipo);
-    player2.setCantFantasmasBuenos(cantFantasmasTipo);
-    player2.setCantFantasmasMalos(cantFantasmasTipo);
+public void cantFantasmasTipo(Player player1, Player player2) {
+    int cantFantasmasTipo = player1.maxFantasmas / 2;
+    player1.cantFantasmasBuenos = cantFantasmasTipo;
+    player1.cantFantasmasMalos = (cantFantasmasTipo);
+    player2.cantFantasmasBuenos = (cantFantasmasTipo);
+    player2.cantFantasmasMalos = (cantFantasmasTipo);
 }
 
 public String player2(){
@@ -109,9 +105,15 @@ return jugador2;
 public void jugar(String modo, Player player1, Player player2){
     switch(modo){
         case "aleatorio":
+            cantFantasmasTipo(player1,player2) ;
+            iniciarJuegoAleatorio(player1, player2);
+            juego(player1, player2);
             break;
         case "manual":
+            cantFantasmasTipo(player1,player2) ;
             iniciarJuegoManual(player1, player2);
+            juego(player1, player2);
+            break;
     }
     
 }
@@ -148,20 +150,8 @@ public void iniciarJuegoManual(Player player1, Player player2){
     public void iniciarJuegoAleatorio(Player player1, Player player2){
     player2.setCantFantasmas(player1.cantFantasmas);
     player2.setMaxFantasmas(player1.maxFantasmas);
-    int fila=0,columna=0;
-    
-    for(int i=0; player1.cantFantasmas<=i;i++){
-    do{
-    
-    
-    }while(!coordenadaValida(fila,columna));
-    tablero[randomfilaPlayer1.nextInt()][randomcolumna.nextInt()] = "F1";
-    
-    
-    }
-    for(int i=0; player2.cantFantasmas<=i;i++){
-    tablero[randomfilaPlayer2.nextInt()][randomcolumna.nextInt()] = "F2";
-    }
+   
+    colocarFantasmasAleatorios(player1,player2);
     
     
     }
@@ -169,22 +159,35 @@ public void iniciarJuegoManual(Player player1, Player player2){
     public void juego(Player player1, Player player2){
     int nuevaFila=0,nuevaColumna=0,columna, fila=0;
     String turnoJugador = player1.usuario;
+    turnos=1;
     
     System.out.println("=======GAME START========");
     
     while(!ganar(player1,player2)){
     System.out.println("Turno de: " + turnoJugador);
     imprimirTablero();    
-    
+    mostrarFantasmas();
+    progreso(player1,player2);
+
     fila = pedirFilaCambio();
     columna = pedirColumnaCambio();
     nuevaFila = moverFantasmasFila();
     nuevaColumna = moverFantasmasColumna();
+    fantasmaSale(player1,player2);
+    if(player1.fantasmaSale || player2.fantasmaSale){
+    break;
+    }
+    
     
     while (true){
     if(!fantasmaSobreescrito(nuevaFila,nuevaColumna) && movimientoValido(fila, columna, nuevaFila,nuevaColumna)){
-    movimiento(columna,fila,nuevaFila,nuevaColumna);
     comer(columna,fila,nuevaFila,nuevaColumna,player1,player2);
+    movimiento(columna,fila,nuevaFila,nuevaColumna);
+    turnos = ((turnos==1) ? 2 : 1);
+    turnoJugador = (turnos==1) ? player1.usuario : player2.usuario;
+
+    separador();
+        
     break;
     }
     else{
@@ -196,54 +199,70 @@ public void iniciarJuegoManual(Player player1, Player player2){
         case 1:
             nuevaFila = moverFantasmasFila();
             nuevaColumna = moverFantasmasColumna();
-            continue;
+            continue; 
             
         case 2:
-            fila = pedirFila();
-            columna=pedirColumna();
+            fila = pedirFilaCambio();
+            columna=pedirColumnaCambio();
             nuevaFila= moverFantasmasFila();
             nuevaColumna = moverFantasmasColumna();
             continue;
+            
                     
     
     }
    
     }}
-    turnos = ((turnos==1) ? 2 : 1);
-    turnoJugador = (turnos==1) ? player1.usuario : player2.usuario;
-    separador();
-        
+    
     }}
     
     public void movimiento(int columna, int fila, int nuevaFila, int nuevaColumna){
+    String tipo="";
     
+    if (turnos == 1) {
+        tipo = (fantasmas[fila][columna].equals("b1") || fantasmas[fila][columna].equals("b2")) ? "bueno" : "malo";
+    } else {
+        tipo = (fantasmas[fila][columna].equals("b1") || fantasmas[fila][columna].equals("b2")) ? "bueno" : "malo";
+    }
+        
      switch(turnos){
          
          case 1: 
          tablero[fila][columna] = "-";
+         fantasmas[fila][columna] = "-";
          tablero[nuevaFila][nuevaColumna] = "F1";
+         fantasmas[nuevaFila][nuevaColumna] = tipo.equals("bueno") ? "b1" : "m1";
+         break;
          
          case 2:
          tablero[fila][columna] = "-";
+         fantasmas[fila][columna]="-";
          tablero[nuevaFila][nuevaColumna] = "F2";
+         fantasmas[nuevaFila][nuevaColumna] = tipo.equals("bueno") ? "b2" : "m2";
+         break;
     
      }
     }
     
     public void comer (int columna, int fila, int nuevaFila, int nuevaColumna, Player player1, Player player2){
-        String tipo="";
+       String tipo="";
+       
         switch(turnos){
         case 1:
         if(tablero[nuevaFila][nuevaColumna].equals("F2")){
-            if (fantasmas[nuevaFila][nuevaColumna].equals("b1")){
+            if (fantasmas[nuevaFila][nuevaColumna].equals("b2")){
             player1.fantasmasBuenosCapturados++;
+            player2.cantFantasmasBuenos--;
             tipo = "bueno";
-            System.out.println(player1.usuario + "se ha comido un fantasma " + tipo + "de " + player2.usuario);
+            System.out.println(player1.usuario + "  se ha comido un fantasma " + tipo + "  de  " + player2.usuario);
+            separador();
             }
-        else if(fantasmas[nuevaFila][nuevaColumna].equals("m1")){
+        else if(fantasmas[nuevaFila][nuevaColumna].equals("m2")){
             player1.fantasmasMalosCapturados++;
+            player2.cantFantasmasMalos--;
             tipo= "malo";
-            System.out.println(player1.usuario + "se ha comido un fantasma " + tipo + "de " + player2.usuario);
+            System.out.println(player1.usuario + "  se ha comido un fantasma  " + tipo + "  de  " + player2.usuario);
+            separador();
             }
         }
         else{
@@ -254,15 +273,19 @@ public void iniciarJuegoManual(Player player1, Player player2){
             
         case 2:
         if(tablero[nuevaFila][nuevaColumna].equals("F1")){
-            if(fantasmas[nuevaFila][nuevaColumna].equals("b2")){
+            if(fantasmas[nuevaFila][nuevaColumna].equals("b1")){
             player2.fantasmasBuenosCapturados++;
+            player1.cantFantasmasBuenos--;
             tipo="bueno";
-            System.out.println(player2.usuario + "se ha comida un fantasma " + tipo + "de " + player1.usuario);
+            System.out.println(player2.usuario + " se ha comida un fantasma " + tipo + " de " + player1.usuario);
+            separador();
             }
-            else if(fantasmas[nuevaFila][nuevaColumna].equals("m2")){
+            else if(fantasmas[nuevaFila][nuevaColumna].equals("m1")){
             player2.fantasmasMalosCapturados++;
+            player1.cantFantasmasMalos--;
             tipo="malo";
-            System.out.println(player2.usuario + "se ha comida un fantasma " + tipo + "de " + player1.usuario);
+            System.out.println(player2.usuario + " se ha comida un fantasma " + tipo + " de " + player1.usuario);
+            separador();
             }
             else{
             break;
@@ -275,38 +298,101 @@ public void iniciarJuegoManual(Player player1, Player player2){
     
     
     public boolean fantasmaSale(Player player1, Player player2){
-       
-    if(tablero[5][0].equals("F1") || tablero[5][5].equals("F1")){
-    System.out.println(player1.usuario + "ha salido del castilo!");
-    return true;
-    }
-    else if(tablero[0][0].equals("F2") || tablero[0][5].equals("F2")){
-    System.out.println(player2.usuario + "ha salido del castillo!");
-    return true;
-    }
-    else{   
+    
+    if (tablero[5][0].equals("F1") || tablero[5][5].equals("F1")) {
         
+    if(fantasmas[5][0].equals("b1") || fantasmas[5][5].equals("b1")){
+        System.out.println(player1.usuario + " ha salido del castillo!");
+        player1.partidasGanadas++;
+        player2.partidasPerdidas++;
+        return player1.fantasmaSale;
+    }}
+     else if (tablero[0][0].equals("F2") || tablero[0][5].equals("F2")) {
+     if(fantasmas[0][0].equals("b2") || fantasmas[0][5].equals("b2")){
+        System.out.println(player2.usuario + " ha salido del castillo!");
+        player2.partidasGanadas++;
+        player1.partidasPerdidas++;
+        return player2.fantasmaSale;
+    }}
+
     return false;
+}
+    public void resultadoRegistro(String resultado, Player player1, Player player2){
+        player1.registrarPartida(resultado);
+        player2.registrarPartida(resultado);
+        
     }
+    public boolean empate(Player player1, Player player2){
+    String resultado="";
+        resultado = "Empate!";
+        System.out.println("Empate!");
+        resultadoRegistro(resultado, player1, player2);
+    
+    return true;
     }
     
     public boolean ganar(Player player1, Player player2){
+    String resultado="";
     
     if(player1.fantasmasBuenosCapturados ==(player2.maxFantasmas/2)){
+    player1.partidasGanadas++;
+    player2.partidasPerdidas++;
+    resultado = player1.usuario + " triunfo sobre " + player2.usuario + "porque capturo todos sus fantasmas buenos!";
+    System.out.println(resultado);
+    resultadoRegistro(resultado,player1,player2);
     return true;
     }
-    else if(player1.cantFantasmasMalos == 0 || player2.cantFantasmasMalos==0){
+    
+    if(player1.cantFantasmasMalos == 0 || player2.cantFantasmasMalos==0){
+    if(player1.cantFantasmasMalos==0){
+    player1.partidasGanadas++;
+    player2.partidasPerdidas++;
+    resultado = player1.usuario + " triunfo sobre " + player2.usuario + " porque este comio todos sus fantasmas malos!";
+    System.out.println(resultado);
+    resultadoRegistro(resultado,player1,player2);
+    
+    }
+    else if(player2.cantFantasmasMalos==0){
+    player2.partidasGanadas++;
+    player1.partidasPerdidas++;
+    resultado = player2.usuario + " triunfo sobre " + player1.usuario + " porque este comio todos sus fantasmas malos!";
+    System.out.println(resultado);
+    resultadoRegistro(resultado,player1,player2);
+    
+    }
     return true;
     }
-    else if(player1.fantasmaSale || player2.fantasmaSale){
+    
+    if(player1.fantasmaSale || player2.fantasmaSale){
+    if(player1.fantasmaSale){
+    player1.partidasGanadas++;
+    player2.partidasPerdidas++;
+    resultado = player1.usuario + " triunfo sobre " + player2.usuario + " porque logro salir del castillo con un fantasma bueno! ";
+    System.out.println(resultado);
+    resultadoRegistro(resultado,player1,player2);
+    
+    }
+    else if(player2.fantasmaSale){
+    player2.partidasGanadas++;
+    player2.partidasPerdidas++;
+    resultado=player1.usuario + " triunfo sobre " + player2.usuario + " porque logro salir del castillo con un fantasma bueno! " ;
+    System.out.println(resultado);
+    player1.registrarPartida(resultado);
+    resultadoRegistro(resultado,player1,player2);
+    }
     return true;
     }
     else if(player2.fantasmasBuenosCapturados == (player1.maxFantasmas/2)){
+    player2.partidasGanadas++;
+    player1.partidasPerdidas++;
+    resultado = player2.usuario + " triunfo sobre " + player1.usuario + "porque capturo todos sus fantasmas buenos!";
+    System.out.println(resultado);
+    player1.registrarPartida(resultado);
+    resultadoRegistro(resultado,player1,player2);
     return true;
     }
-    else if(player2.cantFantasmasMalos ==0){
-    return true;
-    }
+    
+    
     
     return false;    
     }
@@ -369,9 +455,10 @@ public void iniciarJuegoManual(Player player1, Player player2){
     columna = pedirColumna();
    
         
-        boolean valida = coordenadaValida(fila, columna);
+        boolean valida = coordenadaValida(fila, columna,tipo);
         
         if(valida){
+        colocar(fila,columna,tipo);
         registroColocar(player1, player2, turnos);
         break;
         }
@@ -386,13 +473,44 @@ public void iniciarJuegoManual(Player player1, Player player2){
         } while (true);
     
         return tablero;
-    
-        
-        
     }
     
+    public void colocarFantasmasAleatorios(Player player1, Player player2){
+    int fila, columna;
     
-    public String[][] colocar(String[][] fantasmas, int fila, int columna, String tipo){
+    String tipo = "bueno";
+    
+    turnos=1;
+
+    for (int i = 0; i < player1.maxFantasmas; i++) {
+        do {
+            fila = random.nextInt(2); 
+            columna = random.nextInt(6); 
+        } while (!coordenadaValidaSilenciosa(fila, columna,tipo));
+
+        tipo = (i % 2 == 0) ? "bueno" : "malo";
+        colocar(fila,columna,tipo);
+    }
+    
+    turnos=2;
+
+    for (int i = 0; i < player2.maxFantasmas; i++) {
+        do {
+            fila = random.nextInt(2) + 4; 
+            columna = random.nextInt(6); 
+        } while (!coordenadaValidaSilenciosa(fila, columna,tipo));
+
+        tipo = (i % 2 == 0) ? "bueno" : "malo";
+        colocar(fila,columna,tipo);
+    }
+
+    System.out.println("Fantasmas colocados aleatoriamente.");
+    imprimirTablero();
+}
+
+    
+    
+    public String[][] colocar(int fila, int columna, String tipo){
     
         
         if(turnos==1){
@@ -428,7 +546,7 @@ public void iniciarJuegoManual(Player player1, Player player2){
 
 
 
-    public boolean coordenadaValida(int fila, int columna) {
+    public boolean coordenadaValida(int fila, int columna,String tipo) {
         
     if (fila < 0 || columna < 0 || fila >= tablero.length || columna >= tablero[0].length) {
         System.out.println("Las coordenadas no existen.");
@@ -455,9 +573,22 @@ public void iniciarJuegoManual(Player player1, Player player2){
         
     }
     
-    colocar(fantasmas, fila, columna, tipo); 
     return true;
     
+}
+
+    public boolean coordenadaValidaSilenciosa(int fila, int columna,String tipo) {
+    if (fila < 0 || columna < 0 || fila >= tablero.length || columna >= tablero[0].length) { 
+        return false;
+    } 
+    if (columna == 5 || columna==0){
+    return false;
+    } 
+    else if(tablero[fila][columna].equals("-")){
+    return true;
+    }
+    
+   return false;  
 }
 
 
@@ -524,9 +655,73 @@ public void iniciarJuegoManual(Player player1, Player player2){
        else if((restasFilas == 1 && restasColumnas==0) || (restasColumnas == 1 && restasFilas == 0)){
        return true;
        }
-       else {
+       else if(tablero[fila][columna].equals("-") || tablero[fila][columna].equals("X")){
+        System.out.println("Coordinadas invalidas");
+        return false;
+               }
+       else{
        System.out.println("Movimiento no valido");
-       }
-       return true;
+       return false;
+        }}
+    
+    public void mostrarFantasmas(){
+    String[][] fantasmasTemp = new String [fantasmas.length][fantasmas[0].length];
+    System.out.println();
+    System.out.println("Sus fantasmas actuales: ");
+    
+    for (int i = 0; i < fantasmas.length; i++) {
+        for (int x = 0; x < fantasmas[i].length; x++) {
+            fantasmasTemp[i][x] = fantasmas[i][x];  
         }
         }
+    
+    switch (turnos){
+    
+        case 1:
+            for (int i = 0; i < fantasmas.length; i++) {
+            for (int x = 0; x < fantasmas[i].length; x++) {
+            if (fantasmas[i][x].equals("b2") || fantasmas[i][x].equals("m2")) {
+                fantasmasTemp[i][x] = "0";  
+                }
+                    System.out.print(fantasmasTemp[i][x] + " ");  
+                }
+            System.out.println();
+            }
+            break;
+                
+        case 2:
+            for (int i = 0; i < fantasmas.length; i++) {
+            for (int x = 0; x < fantasmas[i].length; x++) {
+            if (fantasmas[i][x].equals("b1") || fantasmas[i][x].equals("m1")) {
+                fantasmasTemp[i][x] = "0";  
+                }
+                    System.out.print(fantasmasTemp[i][x] + " ");  
+                }
+            System.out.println();
+            }
+            break;
+            
+            
+    
+            }}
+    
+    public void progreso(Player player1, Player player2){
+             separador();
+             System.out.println("=========================\nFantasmas buenos restantes de \n" + player1.usuario + ": " + player1.cantFantasmasBuenos );
+             System.out.println(player2.usuario + ": " +  player2.cantFantasmasBuenos);
+             
+             System.out.println("\nFantasmas malos restantes de \n" + player1.usuario + ": " + player1.cantFantasmasMalos);
+             System.out.println(player2.usuario + ": " + player2.cantFantasmasMalos + "\n=========================");
+             separador();
+    
+    
+            }
+            }
+    
+    
+   
+    
+    
+    
+    
+        

@@ -31,7 +31,8 @@ public class GhostFinal {
     static int opcionUsuario=0, posicionUsuario=0;
     static String usuarioBusqueda="", passwordBusqueda="";
     static String jugador2;
-        
+    static String modo = "aleatorio";
+    
     public static void main(String[] args) {
     
         
@@ -119,9 +120,9 @@ public class GhostFinal {
                 if (usuarioValido){
              
                 player2 = new Player (jugador2, null);
-                game.tablero = game.hacerTablero(1);
-                game.iniciarJuego(player1,player2);
-                game.juego(player1, player2);
+                game.hacerTablero();
+                game.jugar(modo, player1, player2);
+                
                 
                 } 
                 else{
@@ -133,12 +134,29 @@ public class GhostFinal {
                 break;
                 
             case 2:
-                System.out.println("Elija la dificultad deseada: \n1.Normal \n2.Expert\n3.Genius ");
+                System.out.println("-->Configuracion\n1.Dificultad\n2.Modo de juego\n3.Regresar al menu principal");
                 opcionUsuario = entrada.nextInt();
                 entrada.nextLine();
-                game.tablero= game.hacerTablero(opcionUsuario);
-                game.configuracion(opcionUsuario, player1);
                 
+                switch(opcionUsuario){
+                
+                  case 1:
+                    System.out.println("Elija la dificultad deseada: \n1.Normal \n2.Expert\n3.Genius ");
+                    opcionUsuario = entrada.nextInt();
+                    entrada.nextLine();
+                    game.configuracion(opcionUsuario, player1);
+        
+    
+                    break;
+                    
+                  case 2:
+                      System.out.println("Modo de juego: \n1.Aleatorio\n2.Manual");
+                      opcionUsuario=entrada.nextInt();
+                      entrada.nextLine();
+                      modo = game.modo(opcionUsuario);
+                     
+                
+                }
                 break;
                 
             case 3:
@@ -149,14 +167,16 @@ public class GhostFinal {
                 switch(opcionUsuario){
                 
                     case 1:
-                       System.out.println("El resumen de las ultimas 10 partidas de: " + player1.getUsuario());
+                       System.out.println("El resumen de las ultimas 10 partidas de: " + player1.usuario);
+                       
                        player1.mostrarPartidas();
                        
                        
                        break;
                        
                     case 2:
-                    System.out.println("El ranking de jugadores actuales es:");  
+                    System.out.println("El ranking de jugadores actuales no esta disponible");  
+                    break;
                 }
                 
                
@@ -206,7 +226,7 @@ public class GhostFinal {
                         break;
                        
                     case 4:
-                        break;
+                        continue;
                         
                     case 5:
                         player1.setUsuario(null);

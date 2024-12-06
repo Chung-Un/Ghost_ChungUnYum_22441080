@@ -28,6 +28,7 @@ public class funcionesGenerales {
     return posicionUsuario;
     }
     
+    
     public static boolean validarUsuario( int posicionUsuario){
     if(posicionUsuario>=0){
                 System.out.println("Usuario encontrado");

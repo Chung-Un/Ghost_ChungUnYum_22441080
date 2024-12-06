@@ -94,16 +94,21 @@ public void cantFantasmasTipo(Player player1, Player player2) {//la cantidad de 
     player2.cantFantasmasMalos = (cantFantasmasTipo);
 }
 
-public String player2(){//se pide el nombre del jugador 2
+public String player2(Player player1){//se pide el nombre del jugador 2
 String jugador2;
 
 System.out.println("Ingrese el nombre del jugador contra el que desea jugar: ");
 jugador2 = entrada.nextLine();
 
+if(player1.usuario.equals(jugador2)){
+System.out.println("Usuario no valido");
+}
+
 return jugador2;
 }
 
 public void jugar(String modo, Player player1, Player player2){//segun la configuracion, se empieza el juego
+    
     switch(modo){
         case "aleatorio":
             cantFantasmasTipo(player1,player2) ;
@@ -412,6 +417,8 @@ public void iniciarJuegoManual(Player player1, Player player2){
     
     return false;    //si ninguna se cumple no han ganado
     }
+    
+   
     
     int pedirFila(){
     int fila=0;

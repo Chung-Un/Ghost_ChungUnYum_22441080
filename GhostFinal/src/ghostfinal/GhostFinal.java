@@ -112,13 +112,16 @@ public class GhostFinal {
         switch(opcionUsuario){
         
             case 1:
-                jugador2 = game.player2();
+                jugador2 = game.player2(player1);
+                if(jugador2.equals(player1.usuario)){
+                
+                continue;
+                }
+                else{
                 posicionUsuario = funciones.validarPosicion(jugador2 , usuariosInfo);
                 usuarioValido = funciones.validarUsuario(posicionUsuario);
                 
-                
                 if (usuarioValido){
-             
                 player2 = new Player (jugador2, null);
                 game.hacerTablero();
                 game.jugar(modo, player1, player2);
@@ -129,7 +132,7 @@ public class GhostFinal {
                 System.out.println("Jugador no existente.");
                 continue;
                 
-                }
+                }}
                 
                 break;
                 
